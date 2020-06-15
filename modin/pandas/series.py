@@ -691,6 +691,12 @@ class Series(BasePandasDataset):
 
         if not as_index:
             raise TypeError("as_index=False only valid with DataFrame")
+        if (
+            not isinstance(by, (pandas.Series, Series))
+            and is_list_like(by)
+            and len(by) == 1
+        ):
+            by = by[0]
         # SeriesGroupBy expects a query compiler object if it is available
         if isinstance(by, Series):
             by = by._query_compiler
